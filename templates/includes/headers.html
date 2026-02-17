@@ -1,0 +1,45 @@
+  <nav class="navbar navbar-expand-lg sticky-top">
+    <div class="container container-narrow">
+      <a class="navbar-brand fw-semibold link-soft" href="{% url "core:home" %}">
+        <span class="brand-badge"><span class="brand-dot"></span>parisaretreats</span>
+      </a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navMenu">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navMenu">
+        <ul class="navbar-nav ms-auto align-items-lg-center">
+          <li class="nav-item"><a class="nav-link link-soft" href="{% url "core:home" %}">Home</a></li>
+          <li class="nav-item"><a class="nav-link link-soft" href="{% url "tours:tour_list" %}">Tours</a></li>
+          {% if user.is_authenticated %}
+            <!-- نمایش وقتی کاربر لاگین کرده -->
+            <li class="nav-item">
+              <a class="nav-link link-soft" href="{% url "accounts:profile" %}">
+                Hi, {{ user.first_name|default:user.phone_number }}
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link link-soft" href="{% url 'accounts:logout' %}">Logout</a>
+            </li>
+          {% else %}
+            <!-- نمایش وقتی کاربر لاگین نکرده -->
+            <li class="nav-item"><a class="nav-link link-soft" href="{% url 'accounts:login' %}">Login</a></li>
+            <li class="nav-item"><a class="nav-link link-soft" href="{% url 'accounts:register' %}">Register</a></li>
+          {% endif %}
+            <li class="nav-item ms-lg-3">
+                <select class="form-select form-select-sm" id="langSelect" style="min-width:120px">
+                    <option value="fa">فارسی</option>
+                    <option value="en">English</option>
+                    <option value="tr">Türkçe</option>
+                </select>
+            </li>
+
+          {% comment %} <li class="nav-item ms-lg-2">
+            <a class="nav-link link-soft d-flex align-items-center" href="#">
+              <i class="bi bi-cart"></i>
+              <span id="cartCount" class="badge rounded-pill text-bg-primary ms-1">0</span>
+            </a>
+          </li> {% endcomment %}
+        </ul>
+      </div>
+    </div>
+  </nav>

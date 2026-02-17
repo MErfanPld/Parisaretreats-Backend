@@ -1,0 +1,63 @@
+{% extends "_master.html" %}
+{% load static %}
+
+{% block title %}Booking Successful{% endblock %}
+
+{% block content %}
+
+<section class="py-5" style="min-height:70vh; background:#f8f9fb;">
+  <div class="container">
+
+    <div class="row justify-content-center">
+      <div class="col-lg-6">
+
+        <div class="card-glass shadow p-5 text-center">
+
+          <!-- Success Icon -->
+          <div class="mb-4">
+            <i class="bi bi-check-circle-fill text-success"
+               style="font-size:70px;"></i>
+          </div>
+
+          <!-- Title -->
+          <h2 class="fw-semibold mb-3">
+            Booking Successful 🎉
+          </h2>
+
+          <!-- Message -->
+          <p class="text-muted mb-4" style="line-height:1.8;">
+            Your tour has been successfully booked.  
+            Our team will review your request and contact you soon.
+          </p>
+
+          <!-- Optional Info -->
+          <div class="alert alert-light border mb-4">
+            <small class="text-muted">
+              You can view your bookings in your dashboard anytime.
+            </small>
+          </div>
+
+          <!-- Buttons -->
+          <div class="d-grid gap-3">
+
+            <a href="{% url 'core:home' %}"
+               class="btn btn-primary">
+              Back to Home
+            </a>
+
+            <a href="{% url 'accounts:profile' %}"
+               class="btn btn-outline-secondary">
+              Go to My Profile
+            </a>
+
+          </div>
+
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+</section>
+
+{% endblock %}

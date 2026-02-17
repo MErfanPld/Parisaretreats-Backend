@@ -1,0 +1,33 @@
+{% extends "_master.html" %}
+{% block title %}Tours | parisaretreats{% endblock title %}
+
+{% block content %}
+<section class="py-4">
+  <div class="container container-narrow">
+    <div class="d-flex align-items-end justify-content-between">
+      <div>
+        <h2 class="section-title reveal">Explore Tours</h2>
+      </div>
+    </div>
+
+    <div class="grid grid-3 mt-4">
+      {% for tour in tours %}
+      <div class="card card-glass tour-card reveal" data-price="{{ tour.price }}" data-location="{{ tour.location }}" data-type="{{ tour.type }}">
+        <img src="{{ tour.image.url }}" class="card-img-top" alt="{{ tour.title }}">
+        <div class="card-body">
+          <div class="d-flex justify-content-between mb-2">
+            <h5 class="card-title mb-0">{{ tour.title }}</h5>
+            {% comment %} <span class="rating"><i class="bi bi-star-fill"></i> {{ tour.rating }}</span> {% endcomment %}
+          </div>
+          <p class="text-muted">${{ tour.price }} </p>
+          <a class="btn btn-primary w-100" href="{% url 'tours:tour_detail' tour.id %}">View Details</a>
+        </div>
+      </div>
+      {% endfor %}
+      {% if tours|length == 0 %}
+      <p class="text-center text-muted mt-4">No tours available at the moment.</p>
+      {% endif %}
+    </div>
+  </div>
+</section>
+{% endblock %}

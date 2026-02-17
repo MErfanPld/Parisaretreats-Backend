@@ -1,0 +1,132 @@
+{% extends "_master.html" %}
+{% load static %}
+
+{% block title %}Home | parisaretreats{% endblock title %}
+
+
+{% block content %}
+
+<section class="hero position-relative">
+  <div class="hero-overlay"></div>
+  <div id="heroCarousel" class="carousel slide carousel-dark hero-carousel" data-bs-ride="carousel">
+    <div class="carousel-inner">
+      {% for slider in sliders %}
+      <div class="carousel-item {% if forloop.first %}active{% endif %}">
+        <img src="{{ slider.image.url }}" alt="{{ slider.title }}">
+        <div class="carousel-caption d-none d-md-block">
+          <h5>{{ slider.title }}</h5>
+          {% if slider.description %}
+          <p>{{ slider.description }}</p>
+          {% endif %}
+          {% if slider.link %}
+          <a href="{{ slider.link }}" class="btn btn-primary">Learn More</a>
+          {% endif %}
+        </div>
+      </div>
+      {% empty %}
+      <div class="carousel-item active">
+        <img src="https://images.unsplash.com/photo-1526778548025-fa2f459cd5c1?q=80&w=2000&auto=format&fit=crop" alt="Default Slide">
+      </div>
+      {% endfor %}
+    </div>
+
+    <button class="carousel-control-prev" type="button" data-bs-target="#heroCarousel" data-bs-slide="prev">
+      <span class="carousel-control-prev-icon"></span>
+    </button>
+    <button class="carousel-control-next" type="button" data-bs-target="#heroCarousel" data-bs-slide="next">
+      <span class="carousel-control-next-icon"></span>
+    </button>
+  </div>
+</section>
+
+
+
+  <section class="py-5">
+    <div class="container container-narrow">
+      <div class="d-flex align-items-end justify-content-between mb-3">
+        <div>
+          <h2 class="section-title reveal">Featured Tours</h2>
+        </div>
+        <a href="{% url "tours:tour_list" %}" class="btn btn-outline hover-lift">View all</a>
+      </div>
+      <div class="grid grid-3">
+          {% for tour in latest_tours %}
+  <div class="card card-glass tour-card reveal" data-price="{{ tour.price }}" data-location="{{ tour.location }}" data-type="{{ tour.category }}">
+    <img src="{{ tour.images.first.image.url }}" class="card-img-top" alt="">
+    <div class="card-body">
+      <div class="d-flex justify-content-between mb-2">
+        <h5 class="card-title mb-0">{{ tour.title }}</h5>
+        <span class="rating"><i class="bi bi-star-fill"></i> {{ tour.rating|default:"4.5" }}</span>
+      </div>
+      <p class="text-muted">${{ tour.price }} • {{ tour.duration }} days</p>
+      <a class="btn btn-primary w-100" href="{% url 'tours:tour_detail' tour.id %}">View Details</a>
+    </div>
+  </div>
+  {% empty %}
+  <p class="text-muted">No tours available at the moment.</p>
+  {% endfor %}
+      </div>
+    </div>
+  </section>
+
+
+
+  <section class="py-5">
+    <div class="container container-narrow">
+      <h2 class="section-title reveal">User Reviews</h2>
+      <p class="section-subtitle reveal">Real traveler experiences</p>
+      <div class="reviews-slider mt-3 reveal">
+        <div class="d-flex justify-content-between mb-2">
+          <div></div>
+          <div class="d-flex gap-2">
+            <button class="btn btn-outline btn-sm" id="reviewsPrev"><i class="bi bi-chevron-right"></i></button>
+            <button class="btn btn-outline btn-sm" id="reviewsNext"><i class="bi bi-chevron-left"></i></button>
+          </div>
+        </div>
+        <div class="reviews-track" id="reviewsTrack">
+          <div class="card-glass testimonial">
+            <div class="d-flex align-items-center gap-3">
+              <img class="rounded-circle" src="https://images.unsplash.com/photo-1508214751196-bcfd4ca60f91?q=80&w=200&auto=format&fit=crop" width="56" height="56" alt="">
+              <div>
+                <h6 class="mb-0">Amelia R.</h6>
+                <small class="text-muted">Bali Retreat</small>
+              </div>
+            </div>
+            <p class="mt-3 mb-0">Everything was seamless. Ocean sunsets were unforgettable.</p>
+          </div>
+          <div class="card-glass testimonial">
+            <div class="d-flex align-items-center gap-3">
+              <img class="rounded-circle" src="https://images.unsplash.com/photo-1547425260-76bcadfb4f2c?q=80&w=200&auto=format&fit=crop" width="56" height="56" alt="">
+              <div>
+                <h6 class="mb-0">Liam K.</h6>
+                <small class="text-muted">Paris Escape</small>
+              </div>
+            </div>
+            <p class="mt-3 mb-0">Loved the boutique hotel and hidden gems tour. Highly recommend.</p>
+          </div>
+          <div class="card-glass testimonial">
+            <div class="d-flex align-items-center gap-3">
+              <img class="rounded-circle" src="https://images.unsplash.com/photo-1527980965255-d3b416303d12?q=80&w=200&auto=format&fit=crop" width="56" height="56" alt="">
+              <div>
+                <h6 class="mb-0">Noah S.</h6>
+                <small class="text-muted">Peru Trek</small>
+              </div>
+            </div>
+            <p class="mt-3 mb-0">Guides were fantastic and the views breathtaking. A lifetime memory.</p>
+          </div>
+          <div class="card-glass testimonial">
+            <div class="d-flex align-items-center gap-3">
+              <img class="rounded-circle" src="https://images.unsplash.com/photo-1520813792240-56fc4a3765a7?q=80&w=200&auto=format&fit=crop" width="56" height="56" alt="">
+              <div>
+                <h6 class="mb-0">Zahra S.</h6>
+                <small class="text-muted">Istanbul Tour</small>
+              </div>
+            </div>
+            <p class="mt-3 mb-0">Professional planning and 24/7 support. Great experience.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+{% endblock content %}

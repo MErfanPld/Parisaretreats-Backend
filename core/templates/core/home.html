@@ -56,9 +56,8 @@
     <div class="card-body">
       <div class="d-flex justify-content-between mb-2">
         <h5 class="card-title mb-0">{{ tour.title }}</h5>
-        <span class="rating"><i class="bi bi-star-fill"></i> {{ tour.rating|default:"4.5" }}</span>
       </div>
-      <p class="text-muted">${{ tour.price }} • {{ tour.duration }} days</p>
+      <p class="text-muted">${{ tour.price }}</p>
       <a class="btn btn-primary w-100" href="{% url 'tours:tour_detail' tour.id %}">View Details</a>
     </div>
   </div>

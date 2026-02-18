@@ -26,6 +26,7 @@ class Tour(models.Model):
         verbose_name="ویژگی‌ها"
     )
     image = models.ImageField(upload_to="tour_images/", verbose_name="تصویر اصلی")
+    capacity = models.PositiveIntegerField(default=10, verbose_name="ظرفیت تور")
     is_active = models.BooleanField(default=True, verbose_name="فعال باشد؟")
     created_at = models.DateTimeField(auto_now_add=True, verbose_name="تاریخ ایجاد")
 
@@ -36,6 +37,17 @@ class Tour(models.Model):
         verbose_name = "تور"
         verbose_name_plural = "تور‌ها"
 
+
+    def remaining_capacity(self, tour_date, exclude_booking=None):
+        """
+        تعداد نفرات باقی مانده برای یک تاریخ تور
+        exclude_booking: اگر ویرایش رزرو باشد، آن رزرو را از جمع کنار بگذار
+        """
+        qs = self.bookings.filter(tour_date=tour_date)
+        if exclude_booking:
+            qs = qs.exclude(pk=exclude_booking.pk)
+        total_reserved = qs.aggregate(total=models.Sum('number_of_people'))['total'] or 0
+        return max(0, self.capacity - total_reserved)
 
 class TourDate(models.Model):
     tour = models.ForeignKey(Tour, on_delete=models.CASCADE, related_name="dates", verbose_name="تور")
@@ -76,7 +88,7 @@ class TourImage(models.Model):
 
 class TourBooking(models.Model):
     user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True, verbose_name="کاربر")
-    tour = models.ForeignKey(Tour, on_delete=models.CASCADE, verbose_name="تور")
+    tour = models.ForeignKey(Tour, on_delete=models.CASCADE, related_name="bookings")
     tour_date = models.ForeignKey(TourDate, on_delete=models.CASCADE, verbose_name="تاریخ تور")
     tour_time = models.ForeignKey(TourTime, on_delete=models.CASCADE, verbose_name="ساعت تور")
     full_name = models.CharField(max_length=150, verbose_name="نام کامل")

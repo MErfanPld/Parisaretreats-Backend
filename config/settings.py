@@ -158,3 +158,7 @@ AUTH_USER_MODEL = 'accounts.User'
 # ]
 
 # LANGUAGE_CODE = 'en'
+
+
+LOGIN_URL = 'accounts:login'
+LOGIN_REDIRECT_URL = 'core:home'

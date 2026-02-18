@@ -1,4 +1,5 @@
 from django.contrib import admin
+from django.forms import ValidationError
 from .models import Tour, TourDate, TourFeature, TourTime, TourImage, TourBooking
 
 # Inline برای نمایش تصاویر در تور
@@ -53,3 +54,24 @@ class TourBookingAdmin(admin.ModelAdmin):
     list_filter = ("tour", "is_paid", "tour_date")
     search_fields = ("full_name", "phone_number", "email")
 
+    def save_model(self, request, obj, form, change):
+        remaining = obj.tour.remaining_capacity(obj.tour_date, exclude_booking=obj)
+        if obj.number_of_people > remaining:
+            raise ValidationError(
+                f"ظرفیت باقی‌مانده این تور برای این تاریخ {remaining} نفر است."
+            )
+        super().save_model(request, obj, form, change)
+
+
+# class TourBookingAdmin(admin.ModelAdmin):
+#     list_display = ('full_name', 'tour', 'tour_date', 'number_of_people', 'is_paid')
+
+#     def save_model(self, request, obj, form, change):
+#         remaining = obj.tour.remaining_capacity(obj.tour_date)
+#         if obj.number_of_people > remaining:
+#             raise ValidationError(
+#                 f"ظرفیت باقی‌مانده این تور برای این تاریخ {remaining} نفر است."
+#             )
+#         super().save_model(request, obj, form, change)
+
+# admin.site.register(TourBooking, TourBookingAdmin)

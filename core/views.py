@@ -3,11 +3,12 @@ from django.views.generic import TemplateView
 
 from core.models import Slider
 from tour.models import Tour
+from django.contrib.auth.mixins import LoginRequiredMixin
 
 # Create your views here.
 
 
-class HomeView(TemplateView):
+class HomeView(LoginRequiredMixin,TemplateView):
     template_name = "core/home.html"
 
     def get_context_data(self, **kwargs):

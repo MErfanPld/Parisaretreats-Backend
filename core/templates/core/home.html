@@ -6,38 +6,84 @@
 
 {% block content %}
 
-<section class="hero position-relative">
-  <div class="hero-overlay"></div>
-  <div id="heroCarousel" class="carousel slide carousel-dark hero-carousel" data-bs-ride="carousel">
-    <div class="carousel-inner">
-      {% for slider in sliders %}
-      <div class="carousel-item {% if forloop.first %}active{% endif %}">
-        <img src="{{ slider.image.url }}" alt="{{ slider.title }}">
-        <div class="carousel-caption d-none d-md-block">
-          <h5>{{ slider.title }}</h5>
-          {% if slider.description %}
-          <p>{{ slider.description }}</p>
-          {% endif %}
-          {% if slider.link %}
-          <a href="{{ slider.link }}" class="btn btn-primary">Learn More</a>
-          {% endif %}
-        </div>
-      </div>
-      {% empty %}
-      <div class="carousel-item active">
-        <img src="https://images.unsplash.com/photo-1526778548025-fa2f459cd5c1?q=80&w=2000&auto=format&fit=crop" alt="Default Slide">
-      </div>
-      {% endfor %}
-    </div>
+<style>
+/* ===== Layout ===== */
+.gallery-flex{
+  display:flex;
+  gap:20px;
+  justify-content:center;
+}
 
-    <button class="carousel-control-prev" type="button" data-bs-target="#heroCarousel" data-bs-slide="prev">
-      <span class="carousel-control-prev-icon"></span>
-    </button>
-    <button class="carousel-control-next" type="button" data-bs-target="#heroCarousel" data-bs-slide="next">
-      <span class="carousel-control-next-icon"></span>
-    </button>
+/* ===== Images ===== */
+.gallery-card{
+  width:30%;
+  border-radius:18px;
+  overflow:hidden;
+}
+
+.gallery-card img{
+  width:100%;
+  height:420px;
+  object-fit:cover;
+  display:block;
+  border-radius:18px;
+}
+
+/* ===== Fade-Up Animation ===== */
+.fade-up{
+  opacity:0;
+  transform:translateY(50px);
+  animation:fadeUp 1.2s ease forwards;
+}
+
+.fade-up:nth-child(1){animation-delay:.2s}
+.fade-up:nth-child(2){animation-delay:.4s}
+.fade-up:nth-child(3){animation-delay:.6s}
+
+@keyframes fadeUp{
+  to{
+    opacity:1;
+    transform:translateY(0);
+  }
+}
+
+/* ===== Mobile: Only Middle Image ===== */
+@media(max-width:768px){
+
+  .gallery-card{
+    display:none;
+  }
+
+  .gallery-card:nth-child(2){
+    display:block;
+    width:100%;
+  }
+
+  .gallery-card img{
+    height:500px;
+  }
+}
+
+
+
+</style>
+
+<section class="hero-gallery">
+  <div class="container gallery-flex">
+
+    {% for slider in sliders|slice:":3" %}
+      <div class="gallery-card fade-up">
+        <img src="{{ slider.image.url }}" alt="">
+      </div>
+    {% endfor %}
+
   </div>
 </section>
+
+
+
+
+
 
 
 
@@ -68,64 +114,5 @@
     </div>
   </section>
 
-
-
-  <section class="py-5">
-    <div class="container container-narrow">
-      <h2 class="section-title reveal">User Reviews</h2>
-      <p class="section-subtitle reveal">Real traveler experiences</p>
-      <div class="reviews-slider mt-3 reveal">
-        <div class="d-flex justify-content-between mb-2">
-          <div></div>
-          <div class="d-flex gap-2">
-            <button class="btn btn-outline btn-sm" id="reviewsPrev"><i class="bi bi-chevron-right"></i></button>
-            <button class="btn btn-outline btn-sm" id="reviewsNext"><i class="bi bi-chevron-left"></i></button>
-          </div>
-        </div>
-        <div class="reviews-track" id="reviewsTrack">
-          <div class="card-glass testimonial">
-            <div class="d-flex align-items-center gap-3">
-              <img class="rounded-circle" src="https://images.unsplash.com/photo-1508214751196-bcfd4ca60f91?q=80&w=200&auto=format&fit=crop" width="56" height="56" alt="">
-              <div>
-                <h6 class="mb-0">Amelia R.</h6>
-                <small class="text-muted">Bali Retreat</small>
-              </div>
-            </div>
-            <p class="mt-3 mb-0">Everything was seamless. Ocean sunsets were unforgettable.</p>
-          </div>
-          <div class="card-glass testimonial">
-            <div class="d-flex align-items-center gap-3">
-              <img class="rounded-circle" src="https://images.unsplash.com/photo-1547425260-76bcadfb4f2c?q=80&w=200&auto=format&fit=crop" width="56" height="56" alt="">
-              <div>
-                <h6 class="mb-0">Liam K.</h6>
-                <small class="text-muted">Paris Escape</small>
-              </div>
-            </div>
-            <p class="mt-3 mb-0">Loved the boutique hotel and hidden gems tour. Highly recommend.</p>
-          </div>
-          <div class="card-glass testimonial">
-            <div class="d-flex align-items-center gap-3">
-              <img class="rounded-circle" src="https://images.unsplash.com/photo-1527980965255-d3b416303d12?q=80&w=200&auto=format&fit=crop" width="56" height="56" alt="">
-              <div>
-                <h6 class="mb-0">Noah S.</h6>
-                <small class="text-muted">Peru Trek</small>
-              </div>
-            </div>
-            <p class="mt-3 mb-0">Guides were fantastic and the views breathtaking. A lifetime memory.</p>
-          </div>
-          <div class="card-glass testimonial">
-            <div class="d-flex align-items-center gap-3">
-              <img class="rounded-circle" src="https://images.unsplash.com/photo-1520813792240-56fc4a3765a7?q=80&w=200&auto=format&fit=crop" width="56" height="56" alt="">
-              <div>
-                <h6 class="mb-0">Zahra S.</h6>
-                <small class="text-muted">Istanbul Tour</small>
-              </div>
-            </div>
-            <p class="mt-3 mb-0">Professional planning and 24/7 support. Great experience.</p>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
 
 {% endblock content %}

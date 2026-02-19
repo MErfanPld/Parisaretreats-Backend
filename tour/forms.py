@@ -1,5 +1,5 @@
 from django import forms
-from .models import TourBooking, TourParticipant
+from .models import TourBooking
 
 class TourBookingForm(forms.ModelForm):
     class Meta:
@@ -13,18 +13,3 @@ class TourBookingForm(forms.ModelForm):
             # "number_of_people": forms.NumberInput(attrs={"class": "form-control", "min": 1}),
         }
 
-
-class TourParticipantForm(forms.ModelForm):
-    class Meta:
-        model = TourParticipant
-        fields = [
-            "full_name",
-            "phone_number",
-            "can_swim",
-            "takes_medication",
-            "medication_details",
-            "accepted_terms"
-        ]
-        widgets = {
-            "medication_details": forms.Textarea(attrs={"rows": 2}),
-        }

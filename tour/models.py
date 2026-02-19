@@ -110,25 +110,3 @@ class TourBooking(models.Model):
         verbose_name = "رزرو تور"
         verbose_name_plural = "رزروهای تور"
 
-
-from django.contrib.auth import get_user_model
-
-User = get_user_model()
-
-class TourParticipant(models.Model):
-    booking = models.ForeignKey("TourBooking", on_delete=models.CASCADE, related_name="participants", verbose_name="رزرو تور")
-    full_name = models.CharField(max_length=150, verbose_name="نام کامل")
-    phone_number = models.CharField(max_length=20, verbose_name="شماره تلفن")
-    can_swim = models.BooleanField(default=False, verbose_name="می‌تواند شنا کند؟")
-    takes_medication = models.BooleanField(default=False, verbose_name="دارو مصرف می‌کند؟")
-    medication_details = models.TextField(blank=True, null=True, verbose_name="توضیحات دارو")
-    accepted_terms = models.BooleanField(default=False, verbose_name="قوانین و شرایط را پذیرفته است")
-
-    created_at = models.DateTimeField(auto_now_add=True, verbose_name="تاریخ ثبت")
-
-    def __str__(self):
-        return f"{self.full_name} ({self.booking.tour.title})"
-
-    class Meta:
-        verbose_name = "شرکت‌کننده تور"
-        verbose_name_plural = "شرکت‌کنندگان تور"

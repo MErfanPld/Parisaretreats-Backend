@@ -18,6 +18,62 @@
 
 {% block content %}{% endblock content %}
 
+<style>
+    .social-float {
+    position: fixed;
+    right: 20px;
+    bottom: 20px;
+    z-index: 1000;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.social-float #socialToggle {
+    width: 50px;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+}
+
+.social-float .social-links {
+    margin-top: 10px;
+    display: none; /* مخفی در ابتدا */
+    flex-direction: column;
+    gap: 10px;
+}
+
+.social-float .social-links a {
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+}
+
+</style>
+
+<!-- دکمه شناور شبکه‌های اجتماعی -->
+<div class="social-float">
+    <button id="socialToggle" class="btn btn-primary rounded-circle">
+        <i class="bi bi-share-fill"></i>
+    </button>
+    <div class="social-links">
+        <a href="https://www.facebook.com" target="_blank" class="btn btn-primary btn-sm rounded-circle">
+            <i class="bi bi-telegram"></i>
+        </a>
+        <a href="https://www.twitter.com" target="_blank" class="btn btn-primary btn-sm rounded-circle">
+            <i class="bi bi-whatsapp"></i>
+        </a>
+        <a href="https://www.instagram.com" target="_blank" class="btn btn-primary btn-sm rounded-circle">
+            <i class="bi bi-instagram"></i>
+        </a>
+    </div>
+</div>
+
 
 <!-- 3. اسکریپت‌ها -->
 <script type="text/javascript">
@@ -82,6 +138,20 @@
     .goog-logo-link { display: none !important; }
     .goog-te-gadget { font-size: 0 !important; }
 </style>
+
+<script>
+    const toggleBtn = document.getElementById("socialToggle");
+    const linksDiv = document.querySelector(".social-float .social-links");
+
+    toggleBtn.addEventListener("click", () => {
+        if (linksDiv.style.display === "flex") {
+            linksDiv.style.display = "none";
+        } else {
+            linksDiv.style.display = "flex";
+        }
+    });
+</script>
+
 
 {% include "./includes/footer.html" %}
 

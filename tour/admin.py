@@ -1,6 +1,10 @@
 from django.contrib import admin
 from django.forms import ValidationError
-from .models import Tour, TourDate, TourFeature, TourTime, TourImage, TourBooking
+from .models import Tour, TourDate, TourFeature, TourParticipant, TourTime, TourImage, TourBooking
+
+class TourParticipantInline(admin.TabularInline):
+    model = TourParticipant
+    extra = 0
 
 # Inline برای نمایش تصاویر در تور
 class TourImageInline(admin.TabularInline):
@@ -62,6 +66,10 @@ class TourBookingAdmin(admin.ModelAdmin):
             )
         super().save_model(request, obj, form, change)
 
+
+@admin.register(TourParticipant)
+class TourParticipantAdmin(admin.ModelAdmin):
+    list_display = ("full_name", "booking", "phone_number", "can_swim", "takes_medication", "accepted_terms", "created_at")
 
 # class TourBookingAdmin(admin.ModelAdmin):
 #     list_display = ('full_name', 'tour', 'tour_date', 'number_of_people', 'is_paid')

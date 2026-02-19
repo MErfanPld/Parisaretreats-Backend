@@ -12,7 +12,9 @@ class TourListView(ListView):
 
 
 
-class TourDetailView(LoginRequiredMixin,DetailView):
+from django.shortcuts import redirect, get_object_or_404
+
+class TourDetailView(DetailView):
     model = Tour
     template_name = "tour/tour_detail.html"
     context_object_name = "tour"
@@ -26,6 +28,12 @@ class TourDetailView(LoginRequiredMixin,DetailView):
 
     def post(self, request, *args, **kwargs):
         self.object = self.get_object()  # مهم: self.object باید ست شود
+
+        # اگر کاربر لاگین نکرده بود، مستقیم به صفحه لاگین بره
+        if not request.user.is_authenticated:
+            # می‌تونیم با next بفرستیم بعد از لاگین دوباره همین صفحه بیاد
+            return redirect(f"/accounts/login/?next={request.path}")
+
         form = TourBookingForm(request.POST)
         tour_date_id = request.POST.get("tour_date")
         tour_time_id = request.POST.get("tour_time")
@@ -50,13 +58,14 @@ class TourDetailView(LoginRequiredMixin,DetailView):
             form.instance.tour = self.object
             form.instance.tour_date = tour_date
             form.instance.tour_time = tour_time
-            form.instance.user = request.user if request.user.is_authenticated else None
+            form.instance.user = request.user
             form.save()
             return redirect("tours:booking_success")
         else:
             context = self.get_context_data()
             context["form"] = form
             return self.render_to_response(context)
+
 
 from django.views.generic import TemplateView
 

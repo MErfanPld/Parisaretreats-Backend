@@ -32,6 +32,9 @@
             <span class="carousel-control-next-icon"></span>
           </button>
         </div>
+            <div class="d-grid mt-4">
+            <a class="btn btn-primary" href="#">For more information ...</a>
+          </div>
       </div>
 
       <!-- Info -->
@@ -88,10 +91,10 @@
                     Full Name
                   {% elif field.name == 'phone_number' %}
                     Phone Number
-                  {% elif field.name == 'email' %}
+                  {% comment %} {% elif field.name == 'email' %}
                     Email
                   {% elif field.name == 'number_of_people' %}
-                    Number of people
+                    Number of people {% endcomment %}
                   {% else %}
                     {{ field.label }}
                   {% endif %}
@@ -103,9 +106,6 @@
             
           </div>
           {% endfor %}
-
-
-
           <div class="d-grid mt-4">
             <button class="btn btn-primary">Book Now</button>
           </div>

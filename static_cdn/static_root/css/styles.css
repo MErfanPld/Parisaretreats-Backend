@@ -49,16 +49,22 @@ a {
   border-radius: 50%;
   background: var(--gradient);
 }
-.btn-primary {
+.btn.btn-primary {
   background: var(--gradient);
   border: none;
   color: #fff;
-  box-shadow: 0 8px 24px rgba(47, 114, 255, 0.35);
+  box-shadow: 0 8px 24px rgba(251, 234, 200, 0.7);
+  transition: all 0.3s ease;
 }
-.btn-primary:hover {
+
+.btn.btn-primary:hover {
   transform: translateY(-2px);
   opacity: 0.95;
+  box-shadow: 0 12px 30px rgba(251, 234, 200, 0.9);
 }
+
+
+
 .btn-outline {
   background: transparent;
   border: 1px solid var(--border);

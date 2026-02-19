@@ -30,17 +30,13 @@
           {{ form.phone_number }}
           {{ form.phone_number.errors }}
         </div>
-        <div class="col-md-6">
-          <label class="form-label">Email</label>
-          {{ form.email }}
-          {{ form.email.errors }}
-        </div>
 
-        <!-- Telegram ID & Password -->
+        <!-- Password -->
+        <!-- Confirm Password  -->
         <div class="col-md-6">
-          <label class="form-label">Telegram ID</label>
-          {{ form.telegram_id }}
-          {{ form.telegram_id.errors }}
+          <label class="form-label">Confirm Password</label>
+          {{ form.password2 }}
+          {{ form.password2.errors }}
         </div>
         <div class="col-md-6">
           <label class="form-label">Password</label>
@@ -48,12 +44,7 @@
           {{ form.password1.errors }}
         </div>
 
-        <!-- Confirm Password & Image -->
-        <div class="col-md-6">
-          <label class="form-label">Confirm Password</label>
-          {{ form.password2 }}
-          {{ form.password2.errors }}
-        </div>
+
       </div>
 
       <div class="d-grid mt-4">

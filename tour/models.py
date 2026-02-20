@@ -95,13 +95,54 @@ class TourBooking(models.Model):
     phone_number = models.CharField(max_length=20, verbose_name="شماره تلفن")
     email = models.EmailField(verbose_name="ایمیل")
 
+    national_code = models.CharField(max_length=20, blank=True, null=True, verbose_name="کد ملی")
+    passport_number = models.CharField(max_length=50, blank=True, null=True, verbose_name="شماره پاسپورت")
+    birth_date = models.DateField(blank=True, null=True, verbose_name="تاریخ تولد")
+    gender = models.CharField(
+            max_length=10,
+            choices=[
+                ("male", "Male"),
+                ("female", "Female"),
+                ("other", "Other"),
+            ],
+            blank=True,
+            null=True,
+            verbose_name="جنسیت"
+        )
+
     can_swim = models.BooleanField(default=False, verbose_name="می‌تواند شنا کند؟")
     takes_medication = models.BooleanField(default=False, verbose_name="دارو مصرف می‌کند؟")
     medication_details = models.TextField(blank=True, null=True, verbose_name="توضیحات دارو")
 
+    has_medical_condition = models.BooleanField(default=False, verbose_name="بیماری خاص دارد؟")
+    medical_condition_details = models.TextField(blank=True, null=True, verbose_name="توضیحات بیماری")
+
+    has_allergy = models.BooleanField(default=False, verbose_name="حساسیت دارد؟")
+    allergy_details = models.TextField(blank=True, null=True, verbose_name="توضیحات حساسیت")
+
+    emergency_contact_name = models.CharField(max_length=150, blank=True, null=True, verbose_name="نام تماس اضطراری")
+    emergency_contact_phone = models.CharField(max_length=20, blank=True, null=True, verbose_name="شماره تماس اضطراری")
+
+    drinks_alcohol = models.BooleanField(default=False, verbose_name="مصرف الکل دارد؟")
+    smokes = models.BooleanField(default=False, verbose_name="سیگار می‌کشد؟")
+
+    language_level = models.CharField(
+        max_length=20,
+        choices=[
+            ("none", "None"),
+            ("basic", "Basic"),
+            ("intermediate", "Intermediate"),
+            ("advanced", "Advanced"),
+        ],
+        blank=True,
+        null=True,
+        verbose_name="سطح زبان انگلیسی"
+    )
+
     number_of_people = models.PositiveIntegerField(default=1, verbose_name="تعداد افراد")
     created_at = models.DateTimeField(auto_now_add=True, verbose_name="تاریخ رزرو")
     is_paid = models.BooleanField(default=False, verbose_name="پرداخت شده؟")
+    agree_to_terms = models.BooleanField(default=False, verbose_name="قوانین را می‌پذیرد؟")
 
     def __str__(self):
         return f"{self.full_name} - {self.tour.title} ({self.tour_date.start_date})"

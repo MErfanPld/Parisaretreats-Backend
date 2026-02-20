@@ -1,0 +1,223 @@
+{% extends "_master.html" %}
+{% load static %}
+
+{% block title %}Complete Your Booking Information | parisaretreats{% endblock %}
+
+{% block content %}
+<div class="vh-100 d-flex flex-column align-items-center py-5" style="background: #f0f2f5;">
+  <div class="container">
+
+    <div class="card-glass p-4 shadow mb-5"
+         style="max-height: 700px; overflow-y: auto; width: 100%; border-radius: 16px;">
+
+      <h5 class="fw-semibold mb-4 text-center">
+        Complete Your Booking Information
+      </h5>
+
+      <form method="post">
+        {% csrf_token %}
+        {{ form.non_field_errors }}
+
+        <!-- =================== Personal Info =================== -->
+        <h6 class="mb-3 mt-3 text-primary">Personal Information</h6>
+        <div class="row g-3">
+          <div class="col-md-6">
+            <label class="form-label">Full Name</label>
+            {{ form.full_name }}
+            {% if form.full_name.errors %}
+              <div class="text-danger small">{{ form.full_name.errors|striptags }}</div>
+            {% endif %}
+          </div>
+
+          <div class="col-md-6">
+            <label class="form-label">Phone Number</label>
+            {{ form.phone_number }}
+            {% if form.phone_number.errors %}
+              <div class="text-danger small">{{ form.phone_number.errors|striptags }}</div>
+            {% endif %}
+          </div>
+
+          <div class="col-md-6">
+            <label class="form-label">Email</label>
+            {{ form.email }}
+            {% if form.email.errors %}
+              <div class="text-danger small">{{ form.email.errors|striptags }}</div>
+            {% endif %}
+          </div>
+
+          <div class="col-md-6">
+            <label class="form-label">National Code</label>
+            {{ form.national_code }}
+            {% if form.national_code.errors %}
+              <div class="text-danger small">{{ form.national_code.errors|striptags }}</div>
+            {% endif %}
+          </div>
+
+          <div class="col-md-6">
+            <label class="form-label">Passport Number</label>
+            {{ form.passport_number }}
+            {% if form.passport_number.errors %}
+              <div class="text-danger small">{{ form.passport_number.errors|striptags }}</div>
+            {% endif %}
+          </div>
+
+          <div class="col-md-6">
+            <label class="form-label">Birth Date</label>
+            {{ form.birth_date }}
+            {% if form.birth_date.errors %}
+              <div class="text-danger small">{{ form.birth_date.errors|striptags }}</div>
+            {% endif %}
+          </div>
+
+          <div class="col-md-6">
+            <label class="form-label">Gender</label>
+            {{ form.gender }}
+            {% if form.gender.errors %}
+              <div class="text-danger small">{{ form.gender.errors|striptags }}</div>
+            {% endif %}
+          </div>
+        </div>
+
+        <!-- =================== Medical Info =================== -->
+        <h6 class="mb-3 mt-4 text-primary">Medical Information</h6>
+        <div class="row g-3">
+          <div class="col-md-6">
+            <div class="form-check mt-2">
+              {{ form.has_medical_condition }}
+              <label class="form-check-label">Has Medical Condition?</label>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <label class="form-label">Medical Condition Details</label>
+            {{ form.medical_condition_details }}
+          </div>
+
+          <div class="col-md-6">
+            <div class="form-check mt-2">
+              {{ form.has_allergy }}
+              <label class="form-check-label">Has Allergy?</label>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <label class="form-label">Allergy Details</label>
+            {{ form.allergy_details }}
+          </div>
+
+          <div class="col-md-6">
+            <label class="form-label">Emergency Contact Name</label>
+            {{ form.emergency_contact_name }}
+          </div>
+          <div class="col-md-6">
+            <label class="form-label">Emergency Contact Phone</label>
+            {{ form.emergency_contact_phone }}
+          </div>
+        </div>
+
+        <!-- =================== Abilities & Habits =================== -->
+        <h6 class="mb-3 mt-4 text-primary">Abilities & Habits</h6>
+        <div class="row g-3">
+          <div class="col-md-6">
+            <div class="form-check mt-2">
+              {{ form.can_swim }}
+              <label class="form-check-label">Can Swim?</label>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <label class="form-label">Swimming Level</label>
+            {{ form.swimming_level }}
+          </div>
+
+          <div class="col-md-6">
+            <div class="form-check mt-2">
+              {{ form.drinks_alcohol }}
+              <label class="form-check-label">Drinks Alcohol?</label>
+            </div>
+          </div>
+
+          <div class="col-md-6">
+            <div class="form-check mt-2">
+              {{ form.smokes }}
+              <label class="form-check-label">Smokes?</label>
+            </div>
+          </div>
+
+          <div class="col-md-6">
+            <label class="form-label">Language Level</label>
+            {{ form.language_level }}
+          </div>
+        </div>
+
+        <!-- =================== Special Requests =================== -->
+        <h6 class="mb-3 mt-4 text-primary">Terms & Conditions</h6>
+        <div class="row g-3">
+          <div class="col-12">
+            {% comment %} <label class="form-label">Terms & Conditions</label> {% endcomment %}
+            <p>Booking & Payment
+
+All bookings must be paid in full at the time of reservation unless otherwise agreed.
+
+Payments are non-refundable except in cases of tour cancellation by the organizer.
+
+Cancellations & Refunds
+
+Cancellations made at least 7 days before the tour will receive a 50% refund.
+
+Cancellations within 7 days of the tour date are non-refundable.
+
+The organizer reserves the right to cancel the tour due to unforeseen circumstances; in such cases, a full refund will be provided.
+
+Travel & Health Requirements
+
+Participants must be in good health and capable of participating in the tour activities.
+
+Any medical conditions or allergies must be disclosed at the time of booking.
+
+It is recommended to carry necessary medications and travel insurance.
+
+Conduct & Responsibility
+
+Participants are expected to follow the instructions of the tour guide and staff at all times.
+
+The organizer is not responsible for personal injuries, lost belongings, or damages incurred during the tour.
+
+Misbehavior or violation of local laws may result in removal from the tour without refund.
+
+Liability & Insurance
+
+Travel insurance is strongly recommended for all participants.
+
+The organizer is not liable for delays, accidents, or cancellations caused by events outside their control (weather, transportation issues, strikes, etc.).
+
+Photography & Media
+
+Photographs and videos may be taken during the tour for promotional purposes.
+
+Participants who do not wish to be photographed should inform the tour staff in advance.
+
+Acceptance of Terms
+
+By booking this tour, you agree to all the terms and conditions listed above.
+
+Failure to comply with these terms may result in denied participation or removal from the tour.</p>
+          </div>
+
+          <div class="col-12">
+            <div class="form-check mt-2">
+              {{ form.agree_to_terms }}
+              <label class="form-check-label">I agree to the Terms & Conditions</label>
+            </div>
+          </div>
+        </div>
+
+        <div class="d-grid mt-4">
+          <button type="submit" class="btn btn-primary btn-lg">
+            Continue to Payment
+          </button>
+        </div>
+
+      </form>
+    </div>
+
+  </div>
+</div>
+{% endblock %}

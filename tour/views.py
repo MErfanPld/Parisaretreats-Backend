@@ -1,8 +1,9 @@
-from django.views.generic import ListView, DetailView, FormView
+from django.urls import reverse
+from django.views.generic import ListView, DetailView, FormView,UpdateView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import get_object_or_404, redirect
-from .models import Tour, TourDate, TourTime
-from .forms import TourBookingForm
+from .models import Tour, TourBooking, TourDate, TourTime
+from .forms import TourBookingExtraForm, TourBookingForm
 
 class TourListView(ListView):
     model = Tour
@@ -59,12 +60,27 @@ class TourDetailView(DetailView):
             form.instance.tour_date = tour_date
             form.instance.tour_time = tour_time
             form.instance.user = request.user
-            form.save()
-            return redirect("tours:booking_success")
+            booking = form.save()
+            return redirect("tours:booking_extra", pk=booking.pk)
         else:
             context = self.get_context_data()
             context["form"] = form
             return self.render_to_response(context)
+
+
+
+class TourBookingExtraView(LoginRequiredMixin, UpdateView):
+    model = TourBooking
+    form_class = TourBookingExtraForm
+    template_name = "tour/booking_extra.html"
+    context_object_name = "booking"
+
+    def get_queryset(self):
+        # فقط رزروهای کاربر لاگین کرده
+        return TourBooking.objects.filter(user=self.request.user)
+
+    def get_success_url(self):
+        return reverse("tours:booking_success")
 
 
 from django.views.generic import TemplateView

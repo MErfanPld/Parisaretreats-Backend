@@ -69,3 +69,7 @@ class TourBookingExtraForm(forms.ModelForm):
                 field.widget.attrs.update({"class": "form-control"})
             else:
                 field.widget.attrs.update({"class": "form-check-input"})
+                
+                
+class ManualPaymentForm(forms.Form):
+    receipt = forms.ImageField(label="upload")

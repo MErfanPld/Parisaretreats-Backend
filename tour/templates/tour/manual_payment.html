@@ -1,0 +1,83 @@
+{% extends "_master.html" %}
+{% load static %}
+
+{% block title %}Manual Payment | parisaretreats{% endblock %}
+
+{% block content %}
+
+<section class="py-5" style="min-height:70vh; background:#f8f9fb;">
+  <div class="container">
+
+    <div class="row justify-content-center">
+      <div class="col-lg-7">
+
+        <div class="card-glass shadow p-5">
+
+          <!-- Title -->
+          <div class="text-center mb-4">
+            <i class="bi bi-bank2 text-primary" style="font-size:60px;"></i>
+            <h2 class="fw-semibold mt-3">
+              Complete Your Payment
+            </h2>
+            <p class="text-muted">
+              Please transfer the amount to one of the bank accounts below and upload your payment receipt.
+            </p>
+          </div>
+
+          <!-- Bank Accounts -->
+          <div class="mb-4">
+            <h5 class="fw-semibold mb-3">Bank Account Details</h5>
+
+            {% for bank in bank_accounts %}
+              <div class="border rounded-3 p-3 mb-3 bg-light">
+                <div class="fw-semibold">{{ bank.bank_name }}</div>
+                <div class="small text-muted mt-2">
+                  <div><strong>Card Number:</strong> {{ bank.card_number }}</div>
+                  <div><strong>Account Holder:</strong> {{ bank.account_holder }}</div>
+                  {% if bank.iban %}
+                    <div><strong>IBAN:</strong> {{ bank.iban }}</div>
+                  {% endif %}
+                </div>
+              </div>
+            {% empty %}
+              <div class="alert alert-warning">
+                No bank accounts available at the moment.
+              </div>
+            {% endfor %}
+          </div>
+
+          <!-- Payment Form -->
+          <div>
+            <h5 class="fw-semibold mb-3">Upload Payment Receipt</h5>
+
+            <form method="post" enctype="multipart/form-data">
+              {% csrf_token %}
+
+              <div class="mb-3">
+                {{ form.receipt.label_tag }}
+                {{ form.receipt }}
+                {% if form.receipt.errors %}
+                  <div class="text-danger small">
+                    {{ form.receipt.errors }}
+                  </div>
+                {% endif %}
+              </div>
+
+              <div class="d-grid mt-4">
+                <button type="submit" class="btn btn-primary">
+                  Submit Receipt & Complete Booking
+                </button>
+              </div>
+
+            </form>
+          </div>
+
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+</section>
+
+{% endblock %}

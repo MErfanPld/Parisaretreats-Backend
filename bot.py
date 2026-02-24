@@ -1,6 +1,7 @@
 import json
 import os
 import django
+from django.conf import settings
 import telebot
 import requests
 from telebot.types import ReplyKeyboardMarkup, KeyboardButton, InlineKeyboardMarkup, InlineKeyboardButton
@@ -48,20 +49,18 @@ def handle_tour_selection(call):
 
 # ----------------- SHOW BOOKINGS -----------------
 def show_bookings(message, tour_id=None):
-    # if message.from_user.id != ADMIN_ID:
-    #     bot.reply_to(message, "شما دسترسی ندارید ❌")
-    #     return
 
-    # درخواست API
     try:
-        response = requests.get(API_URL)
+        response = requests.get(API_URL, params={"tour_id": tour_id})
         data = response.json()
+
         if isinstance(data, str):
             bookings = json.loads(data)
         elif isinstance(data, dict) and 'results' in data:
             bookings = data['results']
         else:
             bookings = data
+
     except Exception as e:
         bot.reply_to(message, f"خطا در دریافت اطلاعات رزروها:\n{e}")
         return
@@ -70,25 +69,59 @@ def show_bookings(message, tour_id=None):
         bot.reply_to(message, "رزروی پرداخت شده وجود ندارد ❌")
         return
 
+    # اگر تور خاصی انتخاب شده فیلتر کن
+    if tour_id:
+        bookings = [b for b in bookings if str(b["tour_id"]) == str(tour_id)]
 
     if not bookings:
-        bot.reply_to(message, "رزروی پرداخت شده برای این تور وجود ندارد ❌")
+        bot.reply_to(message, "رزروی برای این تور وجود ندارد ❌")
         return
 
-    text = "📋 <b>لیست رزروهای پرداخت شده:</b>\n\n"
     for b in bookings:
-        text += (
-            f"👤 نام: {b['full_name']}\n\n"
-            f"📞 تلفن: {b['phone_number']}\n\n"
-            f"📅 تاریخ: {b['tour_date']}\n\n"
-            f"⏰ ساعت: {b['tour_time']}\n\n"
-            f"👥 تعداد: {b['number_of_people']}\n\n"
-            f"💰 مبلغ کل: {b['total_price']}\n\n"
-            f"🏷️ تور: {b['tour']}\n\n"
-            "────────────────────────\n\n"
-        )
 
-    bot.send_message(message.chat.id, text)
+        text = (
+            f"📋 <b>رزرو جدید</b>\n\n"
+            f"👤 نام: {b['full_name']}\n"
+            f"📞 تلفن: {b['phone_number']}\n"
+            f"📅 تاریخ: {b['tour_date']}\n"
+            f"⏰ ساعت: {b['tour_time']}\n"
+            f"👥 تعداد: {b['number_of_people']}\n"
+            f"💰 مبلغ کل: {b['total_price']}\n"
+            f"🏷️ تور: {b['tour_title']}\n"
+        )
+        from urllib.parse import urlparse
+
+        receipt_url = b.get("payment_receipt")
+
+        if receipt_url:
+            try:
+                # اگر URL کامل بود (http://...)
+                if receipt_url.startswith("http"):
+                    parsed_url = urlparse(receipt_url)
+                    clean_path = parsed_url.path  # /media/receipts/xxx.png
+                else:
+                    clean_path = receipt_url
+
+                # حذف /media/ از اول مسیر
+                clean_path = clean_path.replace("/media/", "")
+
+                file_path = os.path.join(settings.MEDIA_ROOT, clean_path)
+
+                with open(file_path, "rb") as photo:
+                    bot.send_photo(
+                        message.chat.id,
+                        photo=photo,
+                        caption=text
+                    )
+
+            except Exception as e:
+                bot.send_message(
+                    message.chat.id,
+                    text + f"\n\n⚠️ خطا در ارسال تصویر: {e}"
+                )
+        else:
+            bot.send_message(message.chat.id, text)
+
 
 # ----------------- RUN BOT -----------------
 if __name__ == "__main__":

@@ -144,6 +144,9 @@ class TourBooking(models.Model):
     is_paid = models.BooleanField(default=False, verbose_name="پرداخت شده؟")
     agree_to_terms = models.BooleanField(default=False, verbose_name="قوانین را می‌پذیرد؟")
 
+    payment_receipt = models.ImageField(upload_to="receipts/", null=True, blank=True)
+
+
     def __str__(self):
         return f"{self.full_name} - {self.tour.title} ({self.tour_date.start_date})"
 
@@ -151,3 +154,15 @@ class TourBooking(models.Model):
         verbose_name = "رزرو تور"
         verbose_name_plural = "رزروهای تور"
 
+
+class BankAccount(models.Model):
+    bank_name = models.CharField(max_length=100)
+    card_number = models.CharField(max_length=20)
+    account_holder = models.CharField(max_length=150)
+
+    def __str__(self):
+        return f"{self.bank_name} - {self.card_number}"
+
+    class Meta:
+        verbose_name = "اطلاعات بانکی"
+        verbose_name_plural = "اطلاعات بانک ها"

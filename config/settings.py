@@ -41,7 +41,7 @@ INSTALLED_APPS = [
     "sslserver",
     'widget_tweaks',
     'rest_framework',
-
+    'psycopg2',
     
     'core',
     'accounts',

@@ -63,6 +63,11 @@ def show_bookings(message, tour_id=None):
         return
 
     for b in bookings:
+        # محاسبه مبلغ کل
+        total_price = getattr(b, "total_price", None)
+        if total_price is None:
+            total_price = b.number_of_people * b.tour.price  # فرض بر قیمت هر نفر در تور
+
         text = (
             f"📋 <b>رزرو جدید</b>\n\n"
             f"👤 نام: {b.full_name}\n"
@@ -70,11 +75,10 @@ def show_bookings(message, tour_id=None):
             f"📅 تاریخ: {b.tour_date}\n"
             f"⏰ ساعت: {b.tour_time}\n"
             f"👥 تعداد: {b.number_of_people}\n"
-            f"💰 مبلغ کل: {b.total_price}\n"
+            f"💰 مبلغ کل: {total_price}\n"
             f"🏷️ تور: {b.tour.title}\n"
         )
 
-        # ارسال رسید اگر موجود باشد
         if b.payment_receipt:
             try:
                 with open(b.payment_receipt.path, "rb") as photo:
@@ -86,6 +90,7 @@ def show_bookings(message, tour_id=None):
                 )
         else:
             bot.send_message(message.chat.id, text)
+
 
 # ----------------- RUN BOT -----------------
 if __name__ == "__main__":

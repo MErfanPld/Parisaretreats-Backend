@@ -8,7 +8,7 @@ from telebot.types import ReplyKeyboardMarkup, KeyboardButton, InlineKeyboardMar
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "config.settings")
 django.setup()
 
-from tour.models import Tour, Booking  # مدل‌ها
+from tour.models import Tour, TourBooking  # مدل‌ها
 
 # ----------------- Bot Config -----------------
 TOKEN = "8492141161:AAFdBFuDuELinq1rziIdn4GsSJ3KuwuLABw"
@@ -54,7 +54,7 @@ def handle_tour_selection(call):
 
 # ----------------- SHOW BOOKINGS -----------------
 def show_bookings(message, tour_id=None):
-    bookings = Booking.objects.filter(payment_status="paid")
+    bookings = TourBooking.objects.filter(payment_status="paid")
     if tour_id:
         bookings = bookings.filter(tour_id=tour_id)
 

@@ -15,7 +15,8 @@ TOKEN = "8492141161:AAFdBFuDuELinq1rziIdn4GsSJ3KuwuLABw"
 ADMIN_ID = 1222901932
 bot = telebot.TeleBot(TOKEN, parse_mode="HTML")
 
-API_URL = "http://84.245.19.209/tour/api/paid_bookings/"
+API_URL = "http://127.0.0.1/tour/api/paid_bookings/"
+
 
 # ----------------- START -----------------
 @bot.message_handler(commands=['start'])
